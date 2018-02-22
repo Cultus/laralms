@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-Route::post('/admin/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
-Route::get('/admin', 'AdminController@index')->name('admin.dashboard');
+
+Route::prefix('admin')->group(function (Router $router) {
+    $router->get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+    $router->post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+    $router->get('/', 'AdminController@index')->name('admin.dashboard');
+});
+
